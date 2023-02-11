@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit05357fcee2c84b38e02ab7ee9813fa70
+class ComposerStaticInit9634e0d61e36256b796e964974fd0e5c
 {
     public static $files = array (
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
@@ -106,6 +106,7 @@ class ComposerStaticInit05357fcee2c84b38e02ab7ee9813fa70
     );
 
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'PHPUnit\\Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Exception.php',
         'PHPUnit\\Framework\\ActualValueIsNotAnObjectException' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Exception/ActualValueIsNotAnObjectException.php',
         'PHPUnit\\Framework\\Assert' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert.php',
@@ -738,10 +739,10 @@ class ComposerStaticInit05357fcee2c84b38e02ab7ee9813fa70
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit05357fcee2c84b38e02ab7ee9813fa70::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit05357fcee2c84b38e02ab7ee9813fa70::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit05357fcee2c84b38e02ab7ee9813fa70::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit05357fcee2c84b38e02ab7ee9813fa70::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit9634e0d61e36256b796e964974fd0e5c::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit9634e0d61e36256b796e964974fd0e5c::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit9634e0d61e36256b796e964974fd0e5c::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit9634e0d61e36256b796e964974fd0e5c::$classMap;
 
         }, null, ClassLoader::class);
     }

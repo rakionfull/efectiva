@@ -32,9 +32,9 @@ class Database extends Config
      */
     public $default = [
         'DSN'      => '',
-        'hostname' => 'DESKTOP-AKKLOM5\SQLEXPRESS',
-        'username' => 'mpantac',
-        'password' => 'kayleap500',
+        'hostname' => 'DESKTOP-K7LLO77\SQLEXPRESS',
+        'username' => 'sa',
+        'password' => 'sqlserver',
         'database' => 'bd_efectiva',
         'DBDriver' => 'SQLSRV',
         'DBPrefix' => '',

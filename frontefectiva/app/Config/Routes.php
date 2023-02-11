@@ -75,7 +75,6 @@ $routes->post('/main/updateDelete', 'Main::updateDelete');
 
 // rutas para paremetrizacion
 $routes->get('/activos', 'Main::activos');
-$routes->get('/riesgos', 'Main::riesgos');
 $routes->get('/controles', 'Main::controles');
 $routes->get('main/getEmpresas', 'Main::getEmpresas');
 $routes->get('main/getEmpresasByActivo', 'Main::getEmpresasByActivo');
@@ -102,6 +101,68 @@ $routes->post('/main/updateTipoActivo', 'Main::updateTipoActivo');
 $routes->get('main/getClasInformacion', 'Main::getClasInformacion');
 $routes->post('/main/addClasInformacion', 'Main::addClasInformacion');
 $routes->post('/main/updateClasInformacion', 'Main::updateClasInformacion');
+
+// Rutas para tipo de riesgos
+$routes->get('/riesgos', 'Main::riesgos');
+$routes->get('/main/showTipoRiesgo/(:num)','TipoRiesgoController::showTipoRiesgo/$1');
+$routes->get('/main/getTipoRiesgos', 'TipoRiesgoController::getTipoRiesgos');
+$routes->post('/main/addTipoRiesgo', 'TipoRiesgoController::addTipoRiesgo');
+$routes->post('/main/updateTipoRiesgo', 'TipoRiesgoController::updateTipoRiesgo');
+$routes->delete('/main/deleteTipoRiesgo/(:num)', 'TipoRiesgoController::deleteTipoRiesgo/$1');
+
+// Rutas para probabilidad de riesgos
+$routes->get('/main/getProbabilidadRiesgo/(:num)','ProbabilidadRiesgoController::getProbabilidadRiesgo/$1');
+$routes->get('/main/showProbabilidadRiesgo/(:num)','ProbabilidadRiesgoController::showProbabilidadRiesgo/$1');
+$routes->post('/main/addProbabilidadRiesgo1','ProbabilidadRiesgoController::addProbabilidadRiesgo1');
+$routes->post('/main/updateProbabilidadRiesgo1','ProbabilidadRiesgoController::updateProbabilidadRiesgo1');
+$routes->post('/main/addProbabilidadRiesgo2','ProbabilidadRiesgoController::addProbabilidadRiesgo2');
+$routes->post('/main/updateProbabilidadRiesgo2','ProbabilidadRiesgoController::updateProbabilidadRiesgo2');
+$routes->delete('/main/deleteProbabilidadRiesgo/(:num)', 'ProbabilidadRiesgoController::deleteProbabilidadRiesgo/$1');
+
+// Rutas para impacto de riesgos
+$routes->get('/main/getImpactoRiesgo/(:num)','ImpactoRiesgoController::getImpactoRiesgo/$1');
+$routes->get('/main/showImpactoRiesgo/(:num)','ImpactoRiesgoController::showImpactoRiesgo/$1');
+$routes->post('/main/addImpactoRiesgo1','ImpactoRiesgoController::addImpactoRiesgo1');
+$routes->post('/main/updateImpactoRiesgo1','ImpactoRiesgoController::updateImpactoRiesgo1');
+$routes->post('/main/addImpactoRiesgo2','ImpactoRiesgoController::addImpactoRiesgo2');
+$routes->post('/main/updateImpactoRiesgo2','ImpactoRiesgoController::updateImpactoRiesgo2');
+$routes->delete('/main/deleteImpactoRiesgo/(:num)', 'ImpactoRiesgoController::deleteImpactoRiesgo/$1');
+
+// Rutas para nivel de riesgos
+$routes->get('/main/getNivelRiesgo','NivelRiesgoController::getNivelRiesgo');
+$routes->get('/main/showNivelRiesgo/(:num)','NivelRiesgoController::showNivelRiesgo/$1');
+$routes->post('/main/addNivelRiesgo','NivelRiesgoController::addNivelRiesgo');
+$routes->post('/main/updateNivelRiesgo/(:num)','NivelRiesgoController::updateNivelRiesgo/$1');
+$routes->delete('/main/deleteNivelRiesgo/(:num)', 'NivelRiesgoController::deleteNivelRiesgo/$1');
+
+// Rutas para tipo de amenaza
+$routes->get('/main/getTiposAmenaza','TipoAmenazaController::getTiposAmenaza');
+$routes->get('/main/showTipoAmenaza/(:num)','TipoAmenazaController::showTipoAmenaza/$1');
+$routes->post('/main/addTipoAmenaza','TipoAmenazaController::addTipoAmenaza');
+$routes->post('/main/updateTipoAmenaza/(:num)','TipoAmenazaController::updateTipoAmenaza/$1');
+$routes->delete('/main/deleteTipoAmenaza/(:num)', 'TipoAmenazaController::deleteTipoAmenaza/$1');
+
+// Rutas para desc de amenaza
+$routes->get('/main/getDescAmenaza','DescripcionAmenazaController::getDescAmenaza');
+$routes->get('/main/showDescAmenaza/(:num)','DescripcionAmenazaController::showDescAmenaza/$1');
+$routes->post('/main/addDescAmenaza','DescripcionAmenazaController::addDescAmenaza');
+$routes->post('/main/updateDescAmenaza/(:num)','DescripcionAmenazaController::updateDescAmenaza/$1');
+$routes->delete('/main/deleteDescAmenaza/(:num)', 'DescripcionAmenazaController::deleteDescAmenaza/$1');
+
+// Rutas para categoria vulnerabilidad
+$routes->get('/main/getCategoriasVulnerabilidad','CategoriasVulnerabilidadController::getCategoriasVulnerabilidad');
+$routes->get('/main/showCategoriasVulnerabilidad/(:num)','CategoriasVulnerabilidadController::showCategoriasVulnerabilidad/$1');
+$routes->post('/main/addCategoriasVulnerabilidad','CategoriasVulnerabilidadController::addCategoriasVulnerabilidad');
+$routes->post('/main/updateCategoriasVulnerabilidad/(:num)','CategoriasVulnerabilidadController::updateCategoriasVulnerabilidad/$1');
+$routes->delete('/main/deleteCategoriasVulnerabilidad/(:num)', 'CategoriasVulnerabilidadController::deleteCategoriasVulnerabilidad/$1');
+
+// Rutas para desc vulnerabilidad
+$routes->get('/main/getDescVulnerabilidad','DescriptionVulnerabilidadController::getDescVulnerabilidad');
+$routes->get('/main/showDescVulnerabilidad/(:num)','DescriptionVulnerabilidadController::showDescVulnerabilidad/$1');
+$routes->post('/main/addDescVulnerabilidad','DescriptionVulnerabilidadController::addDescVulnerabilidad');
+$routes->post('/main/updateDescVulnerabilidad/(:num)','DescriptionVulnerabilidadController::updateDescVulnerabilidad/$1');
+$routes->delete('/main/deleteDescVulnerabilidad/(:num)', 'DescriptionVulnerabilidadController::deleteDescVulnerabilidad/$1');
+
 
 
 /*

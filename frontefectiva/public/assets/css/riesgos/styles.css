@@ -1,0 +1,23 @@
+.nav-escenario{
+    border: none;
+}
+.nav-escenario .nav-link{
+    color: #A4ACBC;
+    border: none;
+    background-color: #fff;
+}
+.nav-escenario .nav-link.active{
+    border-bottom: 1px solid #165094;
+    color: #165094;
+}
+.text-color-riesgo{
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+.td-color-riesgo{
+    padding: 0;
+    height: 1vw;
+    text-align: center;
+    margin: 0;
+}

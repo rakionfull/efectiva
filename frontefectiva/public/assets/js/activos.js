@@ -3,7 +3,6 @@ var BASE_URL = document.getElementById("base_url").value;
 window.addEventListener("hashchange", () => {
 
     let opcion = window.location.hash;
-
     switch(opcion)
     {
         case "#/Empresa":

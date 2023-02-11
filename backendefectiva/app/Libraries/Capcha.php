@@ -82,7 +82,7 @@ public function CreaCaptcha($img_width,$img_height,$expiration){
     imagedestroy($image);
     // $img_width=150;
     // $img_height=30;
-    $img_new_path='http://localhost/Proyectoefectiva/backendefectiva/public/captcha/';
+    $img_new_path='http://localhost/efectiva/backendefectiva/public/captcha/';
     $img = '<img '.($img_id === '' ? '' : 'id="'.$img_id.'"').' src="'.$img_new_path.$img_filename.'" style="width: '.$img_width.'px; height: '.$img_height .'px; border: 0;" alt=" " />';
     return array('word' => $captcha_string, 'time' => $now, 'image' => $img, 'filename' => $img_filename);
     // return $output_png;
