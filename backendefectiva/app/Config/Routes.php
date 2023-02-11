@@ -55,14 +55,21 @@ $routes->group('/api',['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('getConfigPass', 'Home::getConfigPass',['filter' => 'authFilter']);
     $routes->post('addConfigPass', 'Home::addConfigPass',['filter' => 'authFilter']);
     $routes->post('addUser', 'Home::addUser',['filter' => 'authFilter']);
+    $routes->put('updateEstadoUser', 'Home::updateEstadoUser', ['filter' => 'authFilter']);
     $routes->put('updateUser/(:num)', 'Home::updateUser/$1', ['filter' => 'authFilter']);
     $routes->delete('deleteUser/(:num)', 'Home::deleteUser/$1', ['filter' => 'authFilter']);
     $routes->get('getUsers', 'Home::getUsers',['filter' => 'authFilter']);
     $routes->get('getUser/(:num)', 'Home::getUser/$1',['filter' => 'authFilter']);
-    $routes->get('getPerfiles/(:num)', 'Home::getPerfiles/$1',['filter' => 'authFilter']);
+    $routes->get('getPerfiles/', 'Home::getPerfiles',['filter' => 'authFilter']);
     $routes->post('addPerfil', 'Home::addPerfil',['filter' => 'authFilter']);
     $routes->post('updatePerfil', 'Home::updatePerfil',['filter' => 'authFilter']);
-    $routes->get('getDetPerfil/(:num)', 'Home::getDetPerfil/$1',['filter' => 'authFilter']);
+    $routes->delete('deletePerfil', 'Home::deletePerfil',['filter' => 'authFilter']);
+    $routes->get('getDetPerfil', 'Home::getDetPerfil',['filter' => 'authFilter']);
+
+    $routes->get('getModulos', 'Home::getModulos',['filter' => 'authFilter']);
+    $routes->get('getOpcion', 'Home::getOpcion',['filter' => 'authFilter']);
+    $routes->get('getItem', 'Home::getItem',['filter' => 'authFilter']);
+
    
     $routes->post('updateView', 'Home::updateView',['filter' => 'authFilter']);
     $routes->post('updateCreate', 'Home::updateCreate',['filter' => 'authFilter']);
@@ -73,14 +80,15 @@ $routes->group('/api',['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('getEmpresasByActivo', 'Home::getEmpresasByActivo',['filter' => 'authFilter']);
     $routes->post('addEmpresa', 'Home::addEmpresa',['filter' => 'authFilter']);
     $routes->post('updateEmpresa', 'Home::updateEmpresa',['filter' => 'authFilter']);
-  //crud de area
-  $routes->get('getAreas', 'Home::getAreas',['filter' => 'authFilter']);
-  $routes->post('addArea', 'Home::addArea',['filter' => 'authFilter']);
-  $routes->post('updateArea', 'Home::updateArea',['filter' => 'authFilter']);
+    
+    //crud de area
+    $routes->get('getAreas', 'Home::getAreas',['filter' => 'authFilter']);
+    $routes->post('addArea', 'Home::addArea',['filter' => 'authFilter']);
+    $routes->post('updateArea', 'Home::updateArea',['filter' => 'authFilter']);
 
-  $routes->get('getAreasEmpresa', 'Home::getAreasEmpresa',['filter' => 'authFilter']);
-  $routes->post('addAreaEmpresa', 'Home::addAreaEmpresa',['filter' => 'authFilter']);
-  $routes->post('updateAreaEmpresa', 'Home::updateAreaEmpresa',['filter' => 'authFilter']);
+    $routes->get('getAreasEmpresa', 'Home::getAreasEmpresa',['filter' => 'authFilter']);
+    $routes->post('addAreaEmpresa', 'Home::addAreaEmpresa',['filter' => 'authFilter']);
+    $routes->post('updateAreaEmpresa', 'Home::updateAreaEmpresa',['filter' => 'authFilter']);
 
 
     //CRUD Valor Activo
@@ -157,6 +165,25 @@ $routes->group('/api',['namespace' => 'App\Controllers'], function ($routes) {
     $routes->post('addDescVulnerabilidad','DescripcionVulnerabilidadController::store',['filter' => 'authFilter']);
     $routes->post('updateDescVulnerabilidad/(:num)','DescripcionVulnerabilidadController::update/$1',['filter' => 'authFilter']);
     $routes->delete('deleteDescVulnerabilidad/(:num)', 'DescripcionVulnerabilidadController::destroy/$1', ['filter' => 'authFilter']);
+    //CRUD Aspectos de Seguridad
+    $routes->get('getAspectoSeg', 'Home::getAspectoSeg',['filter' => 'authFilter']);
+    $routes->post('addAspectoSeg', 'Home::addAspectoSeg',['filter' => 'authFilter']);
+    $routes->post('updateAspectoSeg', 'Home::updateAspectoSeg',['filter' => 'authFilter']);
+
+    //CRUD Unidades
+    $routes->get('getUnidades', 'Home::getUnidades',['filter' => 'authFilter']);
+    $routes->post('addUnidades', 'Home::addUnidades',['filter' => 'authFilter']);
+    $routes->post('updateUnidades', 'Home::updateUnidades',['filter' => 'authFilter']);
+
+    //CRUD Macroprocesos
+    $routes->get('getMacroproceso', 'Home::getMacroproceso',['filter' => 'authFilter']);
+    $routes->post('addMacroproceso', 'Home::addMacroproceso',['filter' => 'authFilter']);
+    $routes->post('updateMacroproceso', 'Home::updateMacroproceso',['filter' => 'authFilter']);
+
+    //CRUD Procesos
+    $routes->get('getProceso', 'Home::getProceso',['filter' => 'authFilter']);
+    $routes->post('addProceso', 'Home::addProceso',['filter' => 'authFilter']);
+    $routes->post('updateProceso', 'Home::updateProceso',['filter' => 'authFilter']);
 
 });
 

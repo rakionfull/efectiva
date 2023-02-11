@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\Muser;
+use App\Models\Mperfil;
 use App\Models\Msesiones;
 use App\Models\MconfigPass;
 use App\Models\Mcaptcha;
@@ -225,6 +226,8 @@ class Login extends BaseController
         //validamos si existe otra sesion activa en otro ordenador
         try {
             $model = new Muser();
+            $modelPerfil = new Mperfil();
+
             $user = $model->getUser($username);
             unset($user->pass_cl);
             $iat = time();
@@ -266,7 +269,7 @@ class Login extends BaseController
                 helper('jwt');
 
                 $token = [];
-                
+                $permisos = [];
                 if($user->change_pass == 0){
                     $token = getSignedJWTForUser($username);
                     $msg=0;
@@ -274,6 +277,7 @@ class Login extends BaseController
                 }else{
                     $token = getSignedJWTForUser($username);
                     $modelSesion->saveSesion($token, $user->id_us);
+                    $permisos=$modelPerfil->getPermisos($user->perfil_us);
                 }
                 return $this->getResponse(
                         [
@@ -283,6 +287,7 @@ class Login extends BaseController
                             'change' => $msg,
                             'user' => $user->usuario_us,
                             'id' => $user->id_us,
+                            'permisos' => $permisos,
                             'access_token' => $token
                         ]
                 );

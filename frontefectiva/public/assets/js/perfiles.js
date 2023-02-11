@@ -1,63 +1,90 @@
-var BASE_URL = document.getElementById("base_url").value;
+
 var alerta = document.getElementById("alert_perfil");
-var table = $('#table_perfiles').DataTable({
-    language: {
-        "decimal": "",
-        "emptyTable": "No hay información",
-        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-        "infoPostFix": "",
-        "thousands": ",",
-        "lengthMenu": "Mostrar _MENU_ Entradas",
-        "loadingRecords": "Cargando...",
-        "processing": "Procesando...",
-        "search": "Buscar:",
-        "zeroRecords": "Sin resultados encontrados",
-        "paginate": {
-            "first": "Primero",
-            "last": "Ultimo",
-            "next": "Siguiente",
-            "previous": "Anterior"
-        }
-    },
-    // scrollY: "200px",
-    // fixedColumns:   {
-    //     heightMatch: 'none'
-    // },
-    responsive: true,
-    autoWidth: false,
-    // processing: true,
-    lengthMenu:[5,10,25,50],
-    pageLength:5,
-    clickToSelect:false,
-    ajax: BASE_URL+"/main/getPerfiles",
-    aoColumns: [
-        { "data": "id_perfil" },
-        { "data": "perfil" },
-        { "data": "desc_perfil" },
+function LoadPerfiles($est){
 
-        {  "data": "est_perfil"},
-
-        { "defaultContent": "<editPerfil class='text-primary btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Editar' data-original-title='Editar'><i class='mdi mdi-pencil font-size-18'></i></editPerfil>"+
-                            "<deletePerfil class='text-danger btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Eliminar' data-original-title='Eliminar'><i class='mdi mdi-trash-can font-size-18'></i></deletePerfil>"+   
-                            "<detPerfil class='text-primary btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Detalle' data-original-title='Detalle'><i class='mdi mdi-account-edit font-size-18'></i></detPerfil>"
-                
-        },
-    ],
-    columnDefs: [
-        {
-            "targets": [ 0 ],
-            "visible": false,
-            "searchable": false
-        },
+    if ($.fn.DataTable.isDataTable('#table_perfiles')){
         
-    ],
-    'drawCallback': function () {
-        $( 'table_perfiles tbody tr td' ).css( 'padding', '1px 1px 1px 1px' );
-    }
+        $('#table_perfiles').DataTable().rows().remove();
+        $('#table_perfiles').DataTable().destroy();
     
-});
+    }
+
+    var table = $('#table_perfiles').DataTable({
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+        // scrollY: "200px",
+        // fixedColumns:   {
+        //     heightMatch: 'none'
+        // },
+        responsive: true,
+        autoWidth: false,
+        // processing: true,
+        lengthMenu:[5,10,25,50],
+        pageLength:10,
+        clickToSelect:false,
+        ajax: $('#base_url').val()+"/main/getPerfiles/"+$est,
+        aoColumns: [
+            { "data": "id_perfil" },
+            { "data": "perfil" },
+            { "data": "desc_perfil" },
+    
+            {  "data": "est_perfil",
+                        
+                        "mRender": function(data, type, value) {
+                            if (data == '1') return  'Activo';
+                            else return 'Inactivo'
+                              
+    
+                        }
+                    },
+            {  "data": "id_perfil",
+                    "bSortable": false,
+                    "mRender": function(data, type, value) {
+                    return  "<editPerfil class='text-primary btn btn-opcionTabla' data-toggle='tooltip' data-placement='top' title='Editar' data-original-title='Editar'><i class='fas fa-edit font-size-18'></i></editPerfil>"+
+                        "<a href='"+ $('#base_url').val() + "/main/deletePerfil/"+ data +"' class='btn btn-opcionTabla text-danger' data-toggle='tooltip' data-placement='top' title='' data-original-title='Eliminar'><i class='far fa-trash-alt font-size-18'></i></a>"+   
+                        "<a href='"+ $('#base_url').val() + "/main/detPerfil/"+ data +"' class='btn btn-opcionTabla text-danger' data-toggle='tooltip' data-placement='top' title='' data-original-title='Detalle'><i class='fas fa-user-edit font-size-18'></i></a>"
+            
+                          
+
+                    }
+                },
+
+            
+        ],
+        columnDefs: [
+            {
+                "targets": [ 0 ],
+                "visible": false,
+                "searchable": false
+            },
+            
+        ],
+        'drawCallback': function () {
+            $( 'table_perfiles tbody tr td' ).css( 'padding', '1px 1px 1px 1px' );
+        }
+        
+    });
+    $("#table_perfiles").DataTable().ajax.reload(null, false); 
+}
+
 
 function LoadDetPerfil($id_perfil) {
     if ($.fn.DataTable.isDataTable('#table_DetPerfil')){
@@ -164,7 +191,8 @@ function LoadDetPerfil($id_perfil) {
             $( 'table_DetPerfil tbody tr td' ).css( 'padding', '1px 1px 1px 1px' );
         }
         
-    })
+    });
+    $("#table_DetPerfil").DataTable().ajax.reload(null, false); 
 }
 document.getElementById("btnAgregar_perfil").addEventListener("click",async function(){
                                 
@@ -290,7 +318,7 @@ document.getElementById("Modificar_Perfil").addEventListener("click", function()
                             document.getElementById("form_perfil").reset();
                             $('#modal_perfil').modal('hide');
                             alerta.innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert">'+
-                            'Perfil Modificado'+
+                            'Perfil Modificado Correctamente'+
                             '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
                                 '<span aria-hidden="true">&times;</span>'+
                                 '</button>'+
@@ -534,3 +562,12 @@ function changeDelete(elemento){
     }
 
 };
+
+window.addEventListener("load", () => {
+    LoadPerfiles('all');
+});
+
+document.getElementById("select_estado").addEventListener("change",function(){
+    $value=$('#select_estado').val();
+    LoadPerfiles($value);
+});

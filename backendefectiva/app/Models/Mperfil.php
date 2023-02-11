@@ -9,13 +9,10 @@ class Mperfil extends Model
   
     
     //retorna todos los perfiles
-    public function getPerfiles($estado){
-        $consulta = '';
-        if($estado==-1){
-            $consulta="SELECT * FROM  tb_perfiles";
-        }else{
-            $consulta ="SELECT * FROM  tb_perfiles where est_perfil={$estado}";
-        }
+    public function getPerfiles($data){
+        $consulta = "";
+        if($data['estado'] =='all'){ $consulta="SELECT * FROM  tb_perfiles";
+        }else{ $consulta ="SELECT * FROM  tb_perfiles where est_perfil={$data['estado']}"; }
         $query = $this->db->query($consulta);
         return $query->getResultArray();
     }
@@ -46,12 +43,26 @@ class Mperfil extends Model
            
         return $query;
     }
+    public function deletePerfil($data){
+      
+        
+        $query=$this->db->query("DELETE FROM tb_perfiles 
+        where id_perfil = {$data['id']} ") ;
+           
+        return $query;
+    }
     //detalle perfiles}
-    public function getDetPerfil($id){
+    public function getDetPerfil($data){
 
-        $query = $this->db->query("SELECT * from tb_detalle_perfil as DP inner join tb_opcion as O on DP.id_op=O.id_op inner join tb_perfiles as P
-        on DP.id_perfil=P.id_perfil inner join tb_modulo as M on O.id_mod=M.id_mod
-         where P.id_perfil=$id" );
+        $query = $this->db->query("SELECT * from tb_perfiles
+         where id_perfil={$data['id_perfil']}" );
+        return $query->getRow();
+    }
+    //permisos de usuario segun rol
+    public function getPermisos($id){
+
+        $query = $this->db->query("SELECT * from tb_detalle_perfil 
+         where id_perfil={$id} order by id_det_per ASC" );
         return $query->getResultArray();
     }
     public function updateDetPer($data,$column){
@@ -61,6 +72,26 @@ class Mperfil extends Model
         where id_det_per = {$data['id_op']} ") ;
            
         return $query;
+    }
+    public function getModulo($data){
+        
+        $query = $this->db->query("SELECT * FROM tb_detalle_perfil as DP inner join tb_modulo as TM on DP.id=TM.id_mod 
+        where DP.tabla='tb_modulo' and DP.id_perfil={$data['id_perfil']}" );
+        return $query->getResultArray();
+
+    }
+    public function getOpcion($data){
+        
+        $query = $this->db->query("SELECT * from tb_detalle_perfil as DP inner join tb_opcion as T on DP.id=T.id_op 
+        where DP.tabla='tb_opcion' and DP.id_perfil={$data['id_perfil']}" );
+        return $query->getResultArray();
+
+    }
+    public function getItem($data){
+        
+        $query = $this->db->query("SELECT * FROM tb_detalle_perfil as DP inner join tb_item as TI on DP.id=TI.id_item where DP.tabla='tb_item' and DP.id_perfil={$data['id_perfil']}" );
+        return $query->getResultArray();
+
     }
 }
 

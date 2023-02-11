@@ -67,7 +67,7 @@ class Auth extends BaseController {
             $response = perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data);
             
           //$this->session->remove('captchaword');
-           // return json_encode($response);
+           //return json_encode($response);
             if(!$response->password){
               if($response->change == 1 ){
                 $newdata = [
@@ -76,6 +76,7 @@ class Auth extends BaseController {
                   'change'=> false,
                   'id' => $response->id,
                   'token' => $response->access_token->jwt,
+                  'permisos' => $response->permisos,
                 ];
                
               }else{

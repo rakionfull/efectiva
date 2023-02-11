@@ -73,13 +73,16 @@ class Muser extends Model
         return $query;
     }
     //retorna todos los usuarios
-    public function getUsers(){
-        $actual = time();
-        // $Usuario = $this->db->query("SELECT * FROM  tb_users as TU 
-        //     right join tb_sesiones as TS on TS.id_us=TU.id_us WHERE TS.expi >  {$actual}")
-        $Usuario = $this->db->query("SELECT * FROM  tb_users ");
+    public function getUsers($data){
+        $consulta = "";
+        if($data['estado'] == 'all') {$consulta = "SELECT TU.id_us as id, * FROM tb_users as TU left join tb_sesiones as TS on TU.id_us=TS.id_us ";}
+        else { $consulta = "SELECT TU.id_us as id, * FROM tb_users as TU left join tb_sesiones as TS on TU.id_us=TS.id_us where TU.estado_us={$data['estado']} "; }
+
+        $Usuario = $this->db->query($consulta);
         return $Usuario->getResultArray();
     }
+
+   
     //actualiza el usuario
     public function updateUser($data,$id){
       
@@ -92,10 +95,11 @@ class Muser extends Model
            
         return $query;
     }
-    public function updateEstadoUser($id){
+        //actualiza solo el estado 
+    public function updateEstadoUser($data){
         $query=$this->db->query("UPDATE tb_users SET 
         estado_us= '{$data['estado_us']}'
-        where id_us = {$id} ") ;
+        where id_us = {$data['id_us']} ") ;
            
         return $query;
     }

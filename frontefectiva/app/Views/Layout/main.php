@@ -69,34 +69,57 @@ $session = session();?>
                                     <span>Inicio</span>
                                 </a>
                             </li>
-
+                            <?php if($session->permisos[0]->view_det==1){ ?>
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="fas fa-list-alt"></i>
+                                        <span>Accesos</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">  
+                                    <?php if($session->permisos[3]->view_det==1){ ?>
+                                        <li><a href="<?=base_url('listUsers') ?>">Usuarios</a></li>
+                                    <?php }?>
+                                    <?php if($session->permisos[4]->view_det==1){ ?>
+                                        <li><a href="<?=base_url('configPass') ?>">Conf. Password</a></li>
+                                    <?php }?>
+                                    <?php if($session->permisos[5]->view_det==1){ ?>
+                                        <li><a href="<?=base_url('perfiles') ?>">Perfiles</a></li>
+                                    <?php }?>
+                                       
+                                       
+                                        
+                                    </ul>
+                                
+                                </li>
+                            <?php }?>
+                            <?php if($session->permisos[1]->view_det==1){ ?>
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="fas fa-list-alt"></i>
+                                        <span>Parametrización</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">  
+                                    <?php if($session->permisos[6]->view_det==1){ ?>
+                                        <li><a href="<?=base_url('activos') ?>">Activos</a></li>
+                                    <?php }?>
+                                    <?php if($session->permisos[7]->view_det==1){ ?>
+                                        <li><a href="<?=base_url('riesgos') ?>">Riesgos SI-C</a></li>
+                                    <?php }?>
+                                    <?php if($session->permisos[8]->view_det==1){ ?>
+                                        <li><a href="<?=base_url('controles') ?>">Controles</a></li>
+                                    <?php }?>
+                                       
+                                       
+                                        
+                                    </ul>
+                                    
+                                </li>
+                            <?php }?>
+                            <?php if($session->permisos[2]->view_det==1){ ?>
+                         
+                            <?php }?>
+                          
                             
-                            <li>
-                                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                    <i class="fas fa-list-alt"></i>
-                                    <span>Accesos</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">  
-                                    <li><a href="<?=base_url('listUsers') ?>">Usuarios</a></li>
-                                    <li><a href="<?=base_url('configPass') ?>">Conf. Password</a></li>
-                                    <li><a href="<?=base_url('perfiles') ?>">Perfiles</a></li>
-                                </ul>
-                                
-                            </li>
-                
-                            <li>
-                            <li>
-                                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                    <i class="fas fa-list-alt"></i>
-                                    <span>Parametrización</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">  
-                                    <li><a href="<?=base_url('activos') ?>">Activos</a></li>
-                                    <li><a href="<?=base_url('riesgos') ?>">Riesgos SI-C</a></li>
-                                    <li><a href="<?=base_url('controles') ?>">Controles</a></li>
-                                </ul>
-                                
-                            </li>
                 
                             <li>
 

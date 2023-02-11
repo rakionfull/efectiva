@@ -54,7 +54,8 @@ $routes->post('auth/validaCaptcha', 'Auth::validaCaptcha');
 
 
 $routes->get('/listUsers', 'Main::listUsers');
-$routes->get('main/getUsers', 'Main::getUsers');
+$routes->post('main/updateEstadoUser', 'Main::updateEstadoUser');
+$routes->get('main/getUsers/(:any)', 'Main::getUsers/$1');
 $routes->get('/createUser', 'Main::createUser');
 $routes->get('/modifyUser/(:num)', 'Main::modifyUser/$1');
 $routes->get('/deleteUser/(:num)', 'Main::deleteUser/$1');
@@ -63,10 +64,14 @@ $routes->post('/main/addConfigPass', 'Main::addConfigPass');
 $routes->post('/main/addUser', 'Main::addUser');
 $routes->post('/updateUser/(:num)', 'Main::updateUser/$1');
 $routes->get('perfiles', 'Main::perfiles');
-$routes->get('main/getPerfiles/(:num)', 'Main::getPerfiles/$1');
-$routes->get('main/getDetPerfil/(:num)', 'Main::getDetPerfil/$1');
+$routes->get('main/getPerfiles/(:any)', 'Main::getPerfiles/$1');
+$routes->get('main/getPerfiles/(:any)', 'Main::getPerfiles/$1');
+
+$routes->get('main/detPerfil/(:num)', 'Main::detPerfil/$1');
+
 $routes->post('/main/addPerfil', 'Main::addPerfil');
 $routes->post('/main/updatePerfil', 'Main::updatePerfil');
+$routes->get('/main/deletePerfil/(:num)', 'Main::deletePerfil/$1');
 $routes->post('/main/updateView', 'Main::updateView');
 $routes->post('/main/updateCreate', 'Main::updateCreate');
 $routes->post('/main/updateUpdate', 'Main::updateUpdate');
@@ -97,6 +102,7 @@ $routes->post('/main/updateValorActivo', 'Main::updateValorActivo');
 $routes->get('main/getTipoActivo', 'Main::getTipoActivo');
 $routes->post('/main/addTipoActivo', 'Main::addTipoActivo');
 $routes->post('/main/updateTipoActivo', 'Main::updateTipoActivo');
+
 
 $routes->get('main/getClasInformacion', 'Main::getClasInformacion');
 $routes->post('/main/addClasInformacion', 'Main::addClasInformacion');
@@ -164,7 +170,21 @@ $routes->post('/main/updateDescVulnerabilidad/(:num)','DescriptionVulnerabilidad
 $routes->delete('/main/deleteDescVulnerabilidad/(:num)', 'DescriptionVulnerabilidadController::deleteDescVulnerabilidad/$1');
 
 
+$routes->get('main/getAspectoSeg', 'Main::getAspectoSeg');
+$routes->post('/main/addAspectoSeg', 'Main::addAspectoSeg');
+$routes->post('/main/updateAspectoSeg', 'Main::updateAspectoSeg');
 
+$routes->get('main/getUnidades', 'Main::getUnidades');
+$routes->post('/main/addUnidades', 'Main::addUnidades');
+$routes->post('/main/updateUnidades', 'Main::updateUnidades');
+
+$routes->get('main/getMacroproceso', 'Main::getMacroproceso');
+$routes->post('/main/addMacroproceso', 'Main::addMacroproceso');
+$routes->post('/main/updateMacroproceso', 'Main::updateMacroproceso');
+
+$routes->get('main/getProceso', 'Main::getProceso');
+$routes->post('/main/addProceso', 'Main::addProceso');
+$routes->post('/main/updateProceso', 'Main::updateProceso');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

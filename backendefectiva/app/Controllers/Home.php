@@ -12,6 +12,10 @@ use App\Models\Marea;
 use App\Models\MclasInformacion;
 use App\Models\Mtipoactivo;
 use App\Models\Mvaloractivo;
+use App\Models\MaspectoSeg;
+use App\Models\Munidades;
+use App\Models\Mmacroprocesos;
+use App\Models\MProceso;
 use CodeIgniter\HTTP\Response;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
@@ -37,9 +41,10 @@ class Home extends BaseController
 
         try {
             $model = new Muser();
+            $input = $this->getRequestInput($this->request);
                 $response = [
                     
-                    'data' =>  $model->getUsers(),
+                    'data' =>  $model->getUsers($input),
                 ];
                 return $this->respond($response, ResponseInterface::HTTP_OK);
         
@@ -228,6 +233,19 @@ class Home extends BaseController
       
         
     }
+    public function updateEstadoUser(){
+        $input = $this->getRequestInput($this->request);
+
+    
+        $model = new Muser();
+        $result = $model->updateEstadoUser($input);
+       
+        return $this->getResponse(
+            [
+                'user' =>  $result
+            ]
+        );
+    }
     public function deleteUser($id){
         $model = new Muser();
         $result = $model->deleteUser($id);
@@ -238,12 +256,13 @@ class Home extends BaseController
             ]
         );
     }
-    public function getPerfiles($estado){
+    public function getPerfiles(){
 
         try {
             $model = new Mperfil();
+            $input = $this->getRequestInput($this->request);
                 $response = [
-                    'data' =>  $model->getPerfiles($estado)
+                    'data' =>  $model->getPerfiles($input)
                 ];
                 return $this->respond($response, ResponseInterface::HTTP_OK);
         
@@ -294,12 +313,94 @@ class Home extends BaseController
       
         
     }
-    public function getDetPerfil($id){
+    public function deletePerfil()
+    {
+   
+        
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Mperfil();
+        $result = $model->deletePerfil($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    public function getDetPerfil(){
 
         try {
             $model = new Mperfil();
+            $input = $this->getRequestInput($this->request);
                 $response = [
-                    'data' =>  $model->getDetPerfil($id)
+                    'data' =>  $model->getDetPerfil($input)
+                ];
+                return $this->respond($response, ResponseInterface::HTTP_OK);
+        
+        } catch (Exception $ex) {
+            return $this->getResponse(
+                    [
+                        'error' => $ex->getMessage(),
+                    ],
+                    ResponseInterface::HTTP_OK
+                );
+        }
+
+           
+    }
+    public function getModulos(){
+
+        try {
+            $model = new Mperfil();
+            $input = $this->getRequestInput($this->request);
+                $response = [
+                    'data' =>  $model->getModulo($input)
+                ];
+                return $this->respond($response, ResponseInterface::HTTP_OK);
+        
+        } catch (Exception $ex) {
+            return $this->getResponse(
+                    [
+                        'error' => $ex->getMessage(),
+                    ],
+                    ResponseInterface::HTTP_OK
+                );
+        }
+
+           
+    }
+    public function getOpcion(){
+
+        try {
+            $model = new Mperfil();
+            $input = $this->getRequestInput($this->request);
+                $response = [
+                    'data' =>  $model->getOpcion($input)
+                ];
+                return $this->respond($response, ResponseInterface::HTTP_OK);
+        
+        } catch (Exception $ex) {
+            return $this->getResponse(
+                    [
+                        'error' => $ex->getMessage(),
+                    ],
+                    ResponseInterface::HTTP_OK
+                );
+        }
+
+           
+    }
+    public function getItem(){
+
+        try {
+            $model = new Mperfil();
+            $input = $this->getRequestInput($this->request);
+                $response = [
+                    'data' =>  $model->getItem($input)
                 ];
                 return $this->respond($response, ResponseInterface::HTTP_OK);
         
@@ -656,9 +757,9 @@ class Home extends BaseController
 
            
     }
-     //------------------------------------------------------------------------------
+      //------------------------------------------------------------------------------
 
-     public function getValorActivo(){
+      public function getValorActivo(){
 
         try {
             $model = new Mvaloractivo();
@@ -820,6 +921,227 @@ class Home extends BaseController
       
         $model = new MclasInformacion();
         $result = $model->updateClasInformacion($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+
+    public function getAspectoSeg(){
+
+        try {
+            $model = new MaspectoSeg();
+                $response = [
+                    'data' =>  $model->getAspectoSeg()
+                ];
+                return $this->respond($response, ResponseInterface::HTTP_OK);
+        
+        } catch (Exception $ex) {
+            return $this->getResponse(
+                    [
+                        'error' => $ex->getMessage(),
+                    ],
+                    ResponseInterface::HTTP_OK
+                );
+        }
+
+           
+    }
+    public function addAspectoSeg()
+    {
+           
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new MaspectoSeg();
+        $result = $model->saveAspectoSeg($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    public function updateAspectoSeg()
+    {
+           
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new MaspectoSeg();
+        $result = $model->updateAspectoSeg($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+
+    public function getUnidades(){
+
+        try {
+            $model = new Munidades();
+                $response = [
+                    'data' =>  $model->getUnidades()
+                ];
+                return $this->respond($response, ResponseInterface::HTTP_OK);
+        
+        } catch (Exception $ex) {
+            return $this->getResponse(
+                    [
+                        'error' => $ex->getMessage(),
+                    ],
+                    ResponseInterface::HTTP_OK
+                );
+        }
+
+           
+    }
+    public function addUnidades()
+    {
+           
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Munidades();
+        $result = $model->saveUnidades($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    public function updateUnidades()
+    {
+           
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Munidades();
+        $result = $model->updateUnidades($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    
+    
+    public function getMacroproceso(){
+
+        try {
+            $model = new Mmacroprocesos();
+                $response = [
+                    'data' =>  $model->getMacroproceso()
+                ];
+                return $this->respond($response, ResponseInterface::HTTP_OK);
+        
+        } catch (Exception $ex) {
+            return $this->getResponse(
+                    [
+                        'error' => $ex->getMessage(),
+                    ],
+                    ResponseInterface::HTTP_OK
+                );
+        }
+
+           
+    }
+    public function addMacroproceso()
+    {
+           
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Mmacroprocesos();
+        $result = $model->saveMacroproceso($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    public function updateMacroproceso()
+    {
+           
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Mmacroprocesos();
+        $result = $model->updateMacroproceso($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+
+    public function getProceso(){
+
+        try {
+            $model = new Mproceso();
+                $response = [
+                    'data' =>  $model->getProceso()
+                ];
+                return $this->respond($response, ResponseInterface::HTTP_OK);
+        
+        } catch (Exception $ex) {
+            return $this->getResponse(
+                    [
+                        'error' => $ex->getMessage(),
+                    ],
+                    ResponseInterface::HTTP_OK
+                );
+        }
+
+           
+    }
+    public function addProceso()
+    {
+           
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Mproceso();
+        $result = $model->saveProceso($input);
+    
+        return $this->getResponse(
+            [
+                'msg' =>  $result
+            ]
+        );
+      
+        
+    }
+    public function updateProceso()
+    {
+           
+        $input = $this->getRequestInput($this->request);
+
+      
+        $model = new Mproceso();
+        $result = $model->updateProceso($input);
     
         return $this->getResponse(
             [

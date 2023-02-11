@@ -1,6 +1,8 @@
 <?=$this->extend('Layout/main')?> 
 <?=$this->section('content');
-  $session = session();?> 
+  $session = session();
+  
+  ?> 
 
         <div class="row">
                 <div class="col-12">

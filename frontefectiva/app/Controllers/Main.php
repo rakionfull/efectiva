@@ -72,7 +72,7 @@ class Main extends BaseController {
     public function listUsers(){
       
         //opteniendo los datos
-        if($this->session->logged_in){
+        if($this->session->logged_in && $this->session->permisos[3]->view_det==1){
          
           // $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
           // if($response){
@@ -88,22 +88,39 @@ class Main extends BaseController {
      
   
     }
-    public function getUsers(){
+    public function getUsers($est){
 
       $get_endpoint = '/api/getUsers';
-
-      $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+      $request_data = ['estado' => $est];
+      $response =perform_http_request('GET', REST_API_URL . $get_endpoint,$request_data);
       // var_dump($response);
-      // if($response){
+      if($response){
  
        echo json_encode($response);
 
-      // }
+      }
     }
-
+    public function updateEstadoUser(){
+      if($this->session->logged_in){
+        if($this->request->getPost()){
+          $post_endpoint = '/api/updateEstadoUser';
+          $request_data=$this->request->getPost();
+            
+           $response = (perform_http_request('PUT', REST_API_URL . $post_endpoint,$request_data));
+            //  var_dump($response);
+          if($response){
+            echo json_encode($response);
+          }  
+           
+           
+        }else{
+          return redirect()->to(base_url('/login'));
+        }
+      }
+    }
     public function configPass(){
 
-      if($this->session->logged_in){
+      if($this->session->logged_in && $this->session->permisos[4]->view_det==1){
               $post_endpoint = '/api/getConfigPass';
                   
               $request_data = [];
@@ -112,18 +129,7 @@ class Main extends BaseController {
               if($response->data){
                 $datos = $response->data[0];
               }else{
-                // $datos=[
-                //   'duracion' => "",
-                //   'sesion' => "",
-                //   'inactividad' => "",
-                //   'time_intentos' => "",
-                //   'tama_min' => "",
-                //   'tama_max' => "",
-                //   'letras' => 0,
-                //   'caracteres' => 0,
-                //   'numeros' => 0,
-                //   'intentos' => "",
-                // ];
+                
               }
               
               $error = new  \stdClass;
@@ -229,7 +235,7 @@ class Main extends BaseController {
          
       }
       public function createUser(){
-        if($this->session->logged_in){
+        if($this->session->logged_in && $this->session->permisos[3]->create_det==1){
           $datos=[
             'docident_us' => "",
             'nombres_us' => "",
@@ -269,7 +275,7 @@ class Main extends BaseController {
   
       }
       public function modifyUser($id){
-        if($this->session->logged_in){
+        if($this->session->logged_in && $this->session->permisos[3]->update_det==1){
             if($id){
               $post_endpoint = '/api/getUser/'.$id;
               $request_data = [];
@@ -311,7 +317,7 @@ class Main extends BaseController {
      
       public function addUser() {
         // helper(['curl']);
-        if($this->session->logged_in){
+        if($this->session->logged_in && $this->session->permisos[3]->view_det==1){
           if(!$this->request->getPost())
           {
             return redirect()->to(base_url('/listUsers'));
@@ -365,7 +371,7 @@ class Main extends BaseController {
       }
       public function updateUser($id) {
         
-        if($this->session->logged_in){
+        if($this->session->logged_in && $this->session->permisos[3]->update_det==1){
           if(!$this->request->getPost())
           {
             return redirect()->to(base_url('/modifyUser'));
@@ -405,7 +411,7 @@ class Main extends BaseController {
         
       }
       public function deleteUser($id) {
-        if($this->session->logged_in){
+        if($this->session->logged_in && $this->session->permisos[3]->delete_det==1){
           $post_endpoint = '/api/deleteUser/'.$id;
         
           $response = perform_http_request('DELETE', REST_API_URL . $post_endpoint,[]);
@@ -441,7 +447,7 @@ class Main extends BaseController {
       public function perfiles(){
       
         //opteniendo los datos
-        if($this->session->logged_in){
+        if($this->session->logged_in && $this->session->permisos[5]->view_det==1){
           // $get_endpoint = '/api/getPerfiles';
 
           // $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
@@ -458,11 +464,46 @@ class Main extends BaseController {
      
   
       }
-      public function getPerfiles(){
+      public function detPerfil($id){
+      
+        //opteniendo los datos
+        if($this->session->logged_in && $this->session->permisos[5]->view_det==1){
+        
+          $request_data = ['id_perfil' => $id ];
+          //endpoint de los datos necesarios para detalle_perfil
+          $get_endpoint = '/api/getModulos';
+          $get_Perfil = '/api/getDetPerfil';
+          $get_Opcion = '/api/getOpcion';
+          $get_Item = '/api/getItem';
+
+          $perfil =perform_http_request('GET', REST_API_URL . $get_Perfil,$request_data);
+          $modulos =perform_http_request('GET', REST_API_URL . $get_endpoint,$request_data);
+          $opcion =perform_http_request('GET', REST_API_URL . $get_Opcion,$request_data);
+          $item =perform_http_request('GET', REST_API_URL . $get_Item,$request_data);
+
+          if($modulos){
+           
+              $data["modulos"]=$modulos->data;
+              $data["opciones"]=$opcion->data;
+              $data["items"]=$item->data;
+              $data["perfil"]=$perfil->data;
+             
+
+
+              return view('accesos/detPerfil',$data);
+          }
+        }else{
+          return redirect()->to(base_url('/login'));
+        }
+        
+     
+  
+      }
+      public function getPerfiles($est){
         if($this->session->logged_in){
           $get_endpoint = '/api/getPerfiles';
-
-          $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+          $request_data = ['estado' => $est];
+          $response =perform_http_request('GET', REST_API_URL . $get_endpoint,$request_data);
           if($response){
            
             echo json_encode($response);
@@ -471,7 +512,7 @@ class Main extends BaseController {
       }
       public function addPerfil() {
         // helper(['curl']);
-        if($this->session->logged_in){
+        if($this->session->logged_in && $this->session->permisos[5]->create_det==1){
           if(!$this->request->getPost())
           {
             return redirect()->to(base_url('/listUsers'));
@@ -503,10 +544,10 @@ class Main extends BaseController {
       }
       public function updatePerfil() {
         // helper(['curl']);
-        if($this->session->logged_in){
+        if($this->session->logged_in && $this->session->permisos[5]->update_det==1){
           if(!$this->request->getPost())
           {
-            return redirect()->to(base_url('/listUsers'));
+            return redirect()->to(base_url('/perfiles'));
           }else{
         
               $post_endpoint = '/api/updatePerfil';
@@ -533,18 +574,41 @@ class Main extends BaseController {
        
          
       }
-      public function getDetPerfil($id){
-        if($this->session->logged_in){
-          $get_endpoint = '/api/getDetPerfil/'.$id;
-
-          $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
-          if($response){
+      public function deletePerfil($id) {
+      
+        if($this->session->logged_in && $this->session->permisos[5]->delete_det==1){
+        
+        
+              $post_endpoint = '/api/deletePerfil';
            
-            echo json_encode($response);
-          }
-        }
-      }
+              $request_data = ['id' => $id ] ;
 
+              $response = (perform_http_request('DELETE', REST_API_URL . $post_endpoint,$request_data));
+             
+              if($response->msg){
+                $this->session->setFlashdata('error','<div class="alert alert-success alert-dismissible fade show" role="alert">
+                  Perfil Elimnado correctamente
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>');
+                  return redirect()->to(base_url('/perfiles'));
+                }else{
+                    $this->session->setFlashdata('error','<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Error al eliminar
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>');
+                    return redirect()->to(base_url('/perfiles'));
+                }       
+                          
+          
+        }
+       
+         
+      }
+     
       //update del detalle perfil
       public function updateView() {
         // helper(['curl']);
@@ -660,8 +724,8 @@ class Main extends BaseController {
       }
 
       public function activos(){
-       
-        if($this->session->logged_in){
+        
+        if($this->session->logged_in && $this->session->permisos[6]->view_det==1){
     
               return view('parametrizacion/activos');
          
@@ -673,7 +737,7 @@ class Main extends BaseController {
 
       //funciones para opcion activos
       public function getEmpresas(){
-        if($this->session->logged_in){
+        if($this->session->logged_in && $this->session->permisos[14]->view_det==1){
           $get_endpoint = '/api/getEmpresas';
 
           $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
@@ -684,7 +748,7 @@ class Main extends BaseController {
         }
       }
       public function getEmpresasByActivo(){
-        if($this->session->logged_in){
+        if($this->session->logged_in && $this->session->permisos[14]->view_det==1){
           $get_endpoint = '/api/getEmpresasByActivo';
 
           $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
@@ -696,7 +760,7 @@ class Main extends BaseController {
       }
       public function addEmpresa() {
         // helper(['curl']);
-        if($this->session->logged_in){
+        if($this->session->logged_in && $this->session->permisos[14]->create_det==1){
           if(!$this->request->getPost())
           {
             return redirect()->to(base_url('/activos'));
@@ -727,7 +791,7 @@ class Main extends BaseController {
       }
       public function updateEmpresa() {
         // helper(['curl']);
-        if($this->session->logged_in){
+        if($this->session->logged_in && $this->session->permisos[14]->update_det==1){
           if(!$this->request->getPost())
           {
             return redirect()->to(base_url('/activos'));
@@ -754,7 +818,7 @@ class Main extends BaseController {
       }
         //funciones para opcion activos
         public function getAreas(){
-          if($this->session->logged_in){
+          if($this->session->logged_in && $this->session->permisos[15]->view_det==1){
             $get_endpoint = '/api/getAreas';
   
             $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
@@ -892,216 +956,496 @@ class Main extends BaseController {
            
         }
           //--------------------------------------------------------      
-      public function getValorActivo(){
-        if($this->session->logged_in){
-          $get_endpoint = '/api/getValorActivo';
+        public function getValorActivo(){
+          if($this->session->logged_in){
+            $get_endpoint = '/api/getValorActivo';
 
-          $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
-          if($response){
-           
-            echo json_encode($response);
-          }
-        }
-      }
-
-      public function addValorActivo() {
-        // helper(['curl']);
-        if($this->session->logged_in){
-          if(!$this->request->getPost())
-          {
-            return redirect()->to(base_url('/activos'));
-          }else{
-        
-              $post_endpoint = '/api/addValorActivo';
-              $request_data = [];
-               $request_data = $this->request->getPost();
-             
-              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
-              // var_dump($response);
-              
-                if($response->msg ){
-                    echo json_encode($response->msg);
-                
-                }else{
-                  echo json_encode(false);
-                }
-             
-              
-          
-             
+            $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+            if($response){
             
+              echo json_encode($response);
+            }
           }
         }
-       
-         
-      }
-      public function updateValorActivo() {
-        // helper(['curl']);
-        if($this->session->logged_in){
-          if(!$this->request->getPost())
-          {
-            return redirect()->to(base_url('/activos'));
-          }else{
-        
-              $post_endpoint = '/api/updateValorActivo';
-              $request_data = [];
-               $request_data = $this->request->getPost();
-             
-              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
-              // var_dump($response);
-              
-                if($response->msg ){
-                    echo json_encode($response->msg);
-                
-                }else{
-                  echo json_encode(false);
-                }
 
-          }
-        }
-       
-         
-      }
-
-      public function getTipoActivo(){
-        if($this->session->logged_in){
-          $get_endpoint = '/api/getTipoActivo';
-
-          $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
-          if($response){
-           
-            echo json_encode($response);
-          }
-        }
-      }
-      public function addTipoActivo() {
-        // helper(['curl']);
-        if($this->session->logged_in){
-          if(!$this->request->getPost())
-          {
-            return redirect()->to(base_url('/activos'));
-          }else{
-        
-              $post_endpoint = '/api/addTipoActivo';
-              $request_data = [];
-               $request_data = $this->request->getPost();
-             
-              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
-              // var_dump($response);
-              
-                if($response->msg ){
-                    echo json_encode($response->msg);
-                
-                }else{
-                  echo json_encode(false);
-                }
-             
-              
+        public function addValorActivo() {
+          // helper(['curl']);
+          if($this->session->logged_in){
+            if(!$this->request->getPost())
+            {
+              return redirect()->to(base_url('/activos'));
+            }else{
           
-             
+                $post_endpoint = '/api/addValorActivo';
+                $request_data = [];
+                $request_data = $this->request->getPost();
+              
+                $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+                // var_dump($response);
+                
+                  if($response->msg ){
+                      echo json_encode($response->msg);
+                  
+                  }else{
+                    echo json_encode(false);
+                  }
+              
+                
             
+              
+              
+            }
           }
-        }
-       
-         
-      }
-      public function updateTipoActivo() {
-        // helper(['curl']);
-        if($this->session->logged_in){
-          if(!$this->request->getPost())
-          {
-            return redirect()->to(base_url('/activos'));
-          }else{
         
-              $post_endpoint = '/api/updateTipoActivo';
-              $request_data = [];
-               $request_data = $this->request->getPost();
-             
-              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
-              // var_dump($response);
-              
-                if($response->msg ){
-                    echo json_encode($response->msg);
-                
-                }else{
-                  echo json_encode(false);
-                }
-
-          }
-        }
-       
-         
-      }
-
-      public function getClasInformacion(){
-        if($this->session->logged_in){
-          $get_endpoint = '/api/getClasInformacion';
-
-          $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
-          if($response){
-           
-            echo json_encode($response);
-          }
-        }
-      }
-      public function addClasInformacion() {
-        // helper(['curl']);
-        if($this->session->logged_in){
-          if(!$this->request->getPost())
-          {
-            return redirect()->to(base_url('/activos'));
-          }else{
-        
-              $post_endpoint = '/api/addClasInformacion';
-              $request_data = [];
-               $request_data = $this->request->getPost();
-             
-              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
-              // var_dump($response);
-              
-                if($response->msg ){
-                    echo json_encode($response->msg);
-                
-                }else{
-                  echo json_encode(false);
-                }
-             
-              
           
-             
-            
-          }
         }
-       
-         
-      }
-      public function updateClasInformacion() {
-        // helper(['curl']);
-        if($this->session->logged_in){
-          if(!$this->request->getPost())
-          {
-            return redirect()->to(base_url('/activos'));
-          }else{
-        
-              $post_endpoint = '/api/updateClasInformacion';
-              $request_data = [];
-               $request_data = $this->request->getPost();
-             
-              $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
-              // var_dump($response);
+        public function updateValorActivo() {
+          // helper(['curl']);
+          if($this->session->logged_in){
+            if(!$this->request->getPost())
+            {
+              return redirect()->to(base_url('/activos'));
+            }else{
+          
+                $post_endpoint = '/api/updateValorActivo';
+                $request_data = [];
+                $request_data = $this->request->getPost();
               
-                if($response->msg ){
-                    echo json_encode($response->msg);
+                $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+                // var_dump($response);
                 
-                }else{
-                  echo json_encode(false);
-                }
+                  if($response->msg ){
+                      echo json_encode($response->msg);
+                  
+                  }else{
+                    echo json_encode(false);
+                  }
 
+            }
+          }
+        
+          
+        }
+
+        public function getTipoActivo(){
+          if($this->session->logged_in){
+            $get_endpoint = '/api/getTipoActivo';
+
+            $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+            if($response){
+            
+              echo json_encode($response);
+            }
           }
         }
-       
-         
-      }
+        public function addTipoActivo() {
+          // helper(['curl']);
+          if($this->session->logged_in){
+            if(!$this->request->getPost())
+            {
+              return redirect()->to(base_url('/activos'));
+            }else{
+          
+                $post_endpoint = '/api/addTipoActivo';
+                $request_data = [];
+                $request_data = $this->request->getPost();
+              
+                $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+                // var_dump($response);
+                
+                  if($response->msg ){
+                      echo json_encode($response->msg);
+                  
+                  }else{
+                    echo json_encode(false);
+                  }
+              
+                
+            
+              
+              
+            }
+          }
+        
+          
+        }
+        public function updateTipoActivo() {
+          // helper(['curl']);
+          if($this->session->logged_in){
+            if(!$this->request->getPost())
+            {
+              return redirect()->to(base_url('/activos'));
+            }else{
+          
+                $post_endpoint = '/api/updateTipoActivo';
+                $request_data = [];
+                $request_data = $this->request->getPost();
+              
+                $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+                // var_dump($response);
+                
+                  if($response->msg ){
+                      echo json_encode($response->msg);
+                  
+                  }else{
+                    echo json_encode(false);
+                  }
+
+            }
+          }
+        
+          
+        }
+
+        public function getClasInformacion(){
+          if($this->session->logged_in){
+            $get_endpoint = '/api/getClasInformacion';
+
+            $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+            if($response){
+            
+              echo json_encode($response);
+            }
+          }
+        }
+        public function addClasInformacion() {
+          // helper(['curl']);
+          if($this->session->logged_in){
+            if(!$this->request->getPost())
+            {
+              return redirect()->to(base_url('/activos'));
+            }else{
+          
+                $post_endpoint = '/api/addClasInformacion';
+                $request_data = [];
+                $request_data = $this->request->getPost();
+              
+                $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+                // var_dump($response);
+                
+                  if($response->msg ){
+                      echo json_encode($response->msg);
+                  
+                  }else{
+                    echo json_encode(false);
+                  }
+              
+                
+            
+              
+              
+            }
+          }
+        
+          
+        }
+        public function updateClasInformacion() {
+          // helper(['curl']);
+          if($this->session->logged_in){
+            if(!$this->request->getPost())
+            {
+              return redirect()->to(base_url('/activos'));
+            }else{
+          
+                $post_endpoint = '/api/updateClasInformacion';
+                $request_data = [];
+                $request_data = $this->request->getPost();
+              
+                $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+                // var_dump($response);
+                
+                  if($response->msg ){
+                      echo json_encode($response->msg);
+                  
+                  }else{
+                    echo json_encode(false);
+                  }
+
+            }
+          }
+        
+          
+        }
+
+        public function getAspectoSeg(){
+          if($this->session->logged_in){
+            $get_endpoint = '/api/getAspectoSeg';
+
+            $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+            if($response){
+            
+              echo json_encode($response);
+            }
+          }
+        }
+        public function addAspectoSeg() {
+          // helper(['curl']);
+          if($this->session->logged_in){
+            if(!$this->request->getPost())
+            {
+              return redirect()->to(base_url('/activos'));
+            }else{
+          
+                $post_endpoint = '/api/addAspectoSeg';
+                $request_data = [];
+                $request_data = $this->request->getPost();
+              
+                $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+                // var_dump($response);
+                
+                  if($response->msg ){
+                      echo json_encode($response->msg);
+                  
+                  }else{
+                    echo json_encode(false);
+                  }
+              
+                
+            
+              
+              
+            }
+          }
+        
+          
+        }
+        public function updateAspectoSeg() {
+          // helper(['curl']);
+          if($this->session->logged_in){
+            if(!$this->request->getPost())
+            {
+              return redirect()->to(base_url('/activos'));
+            }else{
+          
+                $post_endpoint = '/api/updateAspectoSeg';
+                $request_data = [];
+                $request_data = $this->request->getPost();
+              
+                $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+                // var_dump($response);
+                
+                  if($response->msg ){
+                      echo json_encode($response->msg);
+                  
+                  }else{
+                    echo json_encode(false);
+                  }
+
+            }
+          }
+        
+          
+        }
+
+        public function getUnidades(){
+          if($this->session->logged_in){
+            $get_endpoint = '/api/getUnidades';
+
+            $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+            if($response){
+            
+              echo json_encode($response);
+            }
+          }
+        }
+        public function addUnidades() {
+          // helper(['curl']);
+          if($this->session->logged_in){
+            if(!$this->request->getPost())
+            {
+              return redirect()->to(base_url('/activos'));
+            }else{
+          
+                $post_endpoint = '/api/addUnidades';
+                $request_data = [];
+                $request_data = $this->request->getPost();
+              
+                $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+                // var_dump($response);
+                
+                  if($response->msg ){
+                      echo json_encode($response->msg);
+                  
+                  }else{
+                    echo json_encode(false);
+                  }
+              
+                
+            
+              
+              
+            }
+          }
+        
+          
+        }
+        public function updateUnidades() {
+          // helper(['curl']);
+          if($this->session->logged_in){
+            if(!$this->request->getPost())
+            {
+              return redirect()->to(base_url('/activos'));
+            }else{
+          
+                $post_endpoint = '/api/updateUnidades';
+                $request_data = [];
+                $request_data = $this->request->getPost();
+              
+                $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+                // var_dump($response);
+                
+                  if($response->msg ){
+                      echo json_encode($response->msg);
+                  
+                  }else{
+                    echo json_encode(false);
+                  }
+
+            }
+          }
+        
+          
+        }
+
+        public function getMacroproceso(){
+          if($this->session->logged_in){
+            $get_endpoint = '/api/getMacroproceso';
+
+            $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+            if($response){
+            
+              echo json_encode($response);
+            }
+          }
+        }
+        public function addMacroproceso() {
+          // helper(['curl']);
+          if($this->session->logged_in){
+            if(!$this->request->getPost())
+            {
+              return redirect()->to(base_url('/activos'));
+            }else{
+          
+                $post_endpoint = '/api/addMacroproceso';
+                $request_data = [];
+                $request_data = $this->request->getPost();
+              
+                $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+                // var_dump($response);
+                
+                  if($response->msg ){
+                      echo json_encode($response->msg);
+                  
+                  }else{
+                    echo json_encode(false);
+                  }
+              
+                
+            
+              
+              
+            }
+          }
+        
+          
+        }
+        public function updateMacroproceso() {
+          // helper(['curl']);
+          if($this->session->logged_in){
+            if(!$this->request->getPost())
+            {
+              return redirect()->to(base_url('/activos'));
+            }else{
+          
+                $post_endpoint = '/api/updateMacroproceso';
+                $request_data = [];
+                $request_data = $this->request->getPost();
+              
+                $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+                // var_dump($response);
+                
+                  if($response->msg ){
+                      echo json_encode($response->msg);
+                  
+                  }else{
+                    echo json_encode(false);
+                  }
+
+            }
+          }
+        
+          
+        }
+
+        public function getProceso(){
+          if($this->session->logged_in){
+            $get_endpoint = '/api/getProceso';
+
+            $response =perform_http_request('GET', REST_API_URL . $get_endpoint,[]);
+            if($response){
+            
+              echo json_encode($response);
+            }
+          }
+        }
+        public function addProceso() {
+          // helper(['curl']);
+          if($this->session->logged_in){
+            if(!$this->request->getPost())
+            {
+              return redirect()->to(base_url('/activos'));
+            }else{
+          
+                $post_endpoint = '/api/addProceso';
+                $request_data = [];
+                $request_data = $this->request->getPost();
+              
+                $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+                // var_dump($response);
+                
+                  if($response->msg ){
+                      echo json_encode($response->msg);
+                  
+                  }else{
+                    echo json_encode(false);
+                  }
+              
+                
+            
+              
+              
+            }
+          }
+        
+          
+        }
+        public function updateProceso() {
+          // helper(['curl']);
+          if($this->session->logged_in){
+            if(!$this->request->getPost())
+            {
+              return redirect()->to(base_url('/activos'));
+            }else{
+          
+                $post_endpoint = '/api/updateProceso';
+                $request_data = [];
+                $request_data = $this->request->getPost();
+              
+                $response = (perform_http_request('POST', REST_API_URL . $post_endpoint,$request_data));
+                // var_dump($response);
+                
+                  if($response->msg ){
+                      echo json_encode($response->msg);
+                  
+                  }else{
+                    echo json_encode(false);
+                  }
+
+            }
+          }
+        
+          
+        }
 
       public function riesgos(){
         $count_scene_1 = 0;

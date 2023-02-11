@@ -26,8 +26,8 @@ class Msesiones extends Model
     }
     public function updateLoged($data){
         // return $data;
-        $query=$this->db->query("UPDATE tb_sesiones SET loged ='0'
-        where id_us = $data and loged='1'") ;
+        $query=$this->db->query("DELETE FROM tb_sesiones 
+        where id_us = $data") ;
             
         return $query;
     }
